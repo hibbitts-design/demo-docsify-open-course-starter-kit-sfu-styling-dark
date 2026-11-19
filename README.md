@@ -386,7 +386,7 @@ When the Docsify v5 theme is enabled, to style Blockquotes similarly to the defa
 </div>
 ```
 
-`card-list-guides` / `card-list-sections` (three cards in a row, for a list of guides or a guide's sections; for just two cards, use `card-list`)
+`card-list-guides` / `card-list-courses` / `card-list-sections` (three cards in a row, for a list of guides, a list of courses or a guide's sections; for just two cards, use `card-list`)
 
 ```html
 <div class="card-list-guides">
@@ -415,6 +415,25 @@ When the Docsify v5 theme is enabled, to style Blockquotes similarly to the defa
  ## [Third Guide](#)
 
  One more guide.
+
+ </div>
+</div>
+```
+
+`card-list-rows` (one card per row, for cards without images, such as a guide's sections)
+
+```html
+<div class="card-list-rows">
+ <div class="card">
+
+ ## [First Section](#)
+
+ A short description of this section.
+
+ </div>
+ <div class="card">
+
+ ## [Second Section](#)
 
  </div>
 </div>

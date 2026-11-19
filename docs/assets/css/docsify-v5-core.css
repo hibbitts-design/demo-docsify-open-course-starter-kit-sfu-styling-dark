@@ -765,15 +765,15 @@ body:has(.markdown-section:empty) :is(aside.sidebar, button.sidebar-toggle) {
 }
 
 /* CSS generated/assisted by Anthropic Claude AI */
-.markdown-section :is(.card-list, .card-list-guides, .card-list-sections) {
+.markdown-section :is(.card-list, .card-list-guides, .card-list-courses, .card-list-sections, .card-list-rows) {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
   margin-top: 1rem;
 }
 
-.markdown-section .card:not(:is(.card-list, .card-list-guides, .card-list-sections) .card),
-.markdown-section .card-rounded:not(:is(.card-list, .card-list-guides, .card-list-sections) .card-rounded) {
+.markdown-section .card:not(:is(.card-list, .card-list-guides, .card-list-courses, .card-list-sections, .card-list-rows) .card),
+.markdown-section .card-rounded:not(:is(.card-list, .card-list-guides, .card-list-courses, .card-list-sections, .card-list-rows) .card-rounded) {
   margin-top: 2rem;
 }
 
@@ -832,7 +832,7 @@ body:has(.markdown-section:empty) :is(aside.sidebar, button.sidebar-toggle) {
 
 /* Mobile */
 @media screen and (max-width: 768px) {
-  .markdown-section :is(.card-list, .card-list-guides, .card-list-sections) {
+  .markdown-section :is(.card-list, .card-list-guides, .card-list-courses, .card-list-sections, .card-list-rows) {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
@@ -866,17 +866,39 @@ body:has(.markdown-section:empty) :is(aside.sidebar, button.sidebar-toggle) {
   padding-top: .75rem;
 }
 
-/* Guide card lists – used on their own, as in <div class="card-list-guides">, like any card-list
-   card-list-guides: a Guides page's list of guides; card-list-sections: a guide home's list of its sections (parts)
+/* A card whose title is a link can be clicked anywhere – on its image, title or text – yet is still one link for
+   keyboard and screen reader users (the title's link is stretched over the whole card). Its image can then be a
+   plain image, as in ![](image.jpg ":no-zoom"), rather than a second link to the same page. Any other link in the
+   card, such as a link button, sits above it and still works. (a.anchor is Docsify's own heading link) */
+.markdown-section :is(.card, .card-rounded):has(> h2 > a:not(.anchor)) {
+  position: relative;
+}
+
+.markdown-section :is(.card, .card-rounded) > h2 > a:not(.anchor)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.markdown-section :is(.card, .card-rounded):has(> h2 > a:not(.anchor)) a:not(h2 > a) {
+  position: relative;
+  z-index: 2;
+}
+
+/* Guide and course card lists – used on their own, as in <div class="card-list-guides">, like any card-list
+   card-list-guides: a Guides page's list of guides; card-list-courses: a Courses page's list of courses (the same
+   layout for now, with its own name so guides and courses can be styled apart later); card-list-sections: a guide
+   home's list of its sections (parts)
    Both show three cards in a row on wide screens (two on tablets, one on phones).
    Optional, with any card-list: card-lines-2 or card-lines-3 – each card's text is trimmed to two or three lines, so
    the cards stay a similar size (a paragraph with a link button is left whole, so the button always shows); leave
    both out for the full text */
-.markdown-section :is(.card-list-guides, .card-list-sections) {
+.markdown-section :is(.card-list-guides, .card-list-courses, .card-list-sections) {
   grid-template-columns: repeat(3, 1fr);
 }
 
-.markdown-section :is(.card-list-guides, .card-list-sections) :is(.card, .card-rounded) img {
+.markdown-section :is(.card-list-guides, .card-list-courses, .card-list-sections) :is(.card, .card-rounded) img {
   height: 180px;
 }
 
@@ -900,55 +922,77 @@ body:has(.markdown-section:empty) :is(aside.sidebar, button.sidebar-toggle) {
    rules below give the count, for cards of two to eight parts. Browsers without subgrid, and cards of more than eight
    parts, keep the layout above. */
 @supports (grid-template-rows: subgrid) {
-  .markdown-section :is(.card-list, .card-list-guides, .card-list-sections) > :is(.card, .card-rounded):not(:has(> :nth-child(9))) {
+  .markdown-section :is(.card-list, .card-list-guides, .card-list-courses, .card-list-sections) > :is(.card, .card-rounded):not(:has(> :nth-child(9))) {
     display: grid;
     grid-template-rows: subgrid;
     row-gap: 0;
   }
 
-  .markdown-section :is(.card-list, .card-list-guides, .card-list-sections) > :is(.card, .card-rounded):has(> :nth-child(2):last-child) {
+  .markdown-section :is(.card-list, .card-list-guides, .card-list-courses, .card-list-sections) > :is(.card, .card-rounded):has(> :nth-child(2):last-child) {
     grid-row: span 2;
   }
 
-  .markdown-section :is(.card-list, .card-list-guides, .card-list-sections) > :is(.card, .card-rounded):has(> :nth-child(3):last-child) {
+  .markdown-section :is(.card-list, .card-list-guides, .card-list-courses, .card-list-sections) > :is(.card, .card-rounded):has(> :nth-child(3):last-child) {
     grid-row: span 3;
   }
 
-  .markdown-section :is(.card-list, .card-list-guides, .card-list-sections) > :is(.card, .card-rounded):has(> :nth-child(4):last-child) {
+  .markdown-section :is(.card-list, .card-list-guides, .card-list-courses, .card-list-sections) > :is(.card, .card-rounded):has(> :nth-child(4):last-child) {
     grid-row: span 4;
   }
 
-  .markdown-section :is(.card-list, .card-list-guides, .card-list-sections) > :is(.card, .card-rounded):has(> :nth-child(5):last-child) {
+  .markdown-section :is(.card-list, .card-list-guides, .card-list-courses, .card-list-sections) > :is(.card, .card-rounded):has(> :nth-child(5):last-child) {
     grid-row: span 5;
   }
 
-  .markdown-section :is(.card-list, .card-list-guides, .card-list-sections) > :is(.card, .card-rounded):has(> :nth-child(6):last-child) {
+  .markdown-section :is(.card-list, .card-list-guides, .card-list-courses, .card-list-sections) > :is(.card, .card-rounded):has(> :nth-child(6):last-child) {
     grid-row: span 6;
   }
 
-  .markdown-section :is(.card-list, .card-list-guides, .card-list-sections) > :is(.card, .card-rounded):has(> :nth-child(7):last-child) {
+  .markdown-section :is(.card-list, .card-list-guides, .card-list-courses, .card-list-sections) > :is(.card, .card-rounded):has(> :nth-child(7):last-child) {
     grid-row: span 7;
   }
 
-  .markdown-section :is(.card-list, .card-list-guides, .card-list-sections) > :is(.card, .card-rounded):has(> :nth-child(8):last-child) {
+  .markdown-section :is(.card-list, .card-list-guides, .card-list-courses, .card-list-sections) > :is(.card, .card-rounded):has(> :nth-child(8):last-child) {
     grid-row: span 8;
   }
 }
 
 @media screen and (max-width: 1024px) {
-  .markdown-section :is(.card-list-guides, .card-list-sections) {
+  .markdown-section :is(.card-list-guides, .card-list-courses, .card-list-sections) {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media screen and (max-width: 768px) {
-  .markdown-section :is(.card-list-guides, .card-list-sections) {
+  .markdown-section :is(.card-list-guides, .card-list-courses, .card-list-sections) {
     grid-template-columns: 1fr;
   }
 
-  .markdown-section :is(.card-list-guides, .card-list-sections) :is(.card, .card-rounded) img {
+  .markdown-section :is(.card-list-guides, .card-list-courses, .card-list-sections) :is(.card, .card-rounded) img {
     height: 200px;
   }
+}
+
+/* Card list in rows – card-list-rows: one card per row, across the page, for cards without images (such as a guide's
+   sections listed one under the other). The same cards as the other card lists, one column on every screen. */
+.markdown-section .card-list-rows {
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+/* (a little less space above and below each card's content, as these cards are short) */
+.markdown-section .card-list-rows > :is(.card, .card-rounded) {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+}
+
+.markdown-section .card-list-rows > :is(.card, .card-rounded) > :last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.markdown-section .card-list-rows > :is(.card, .card-rounded) > h2 + p {
+  margin-top: .25rem;
 }
 
 /* Guide cover – a small cover image with the guide's details beside it, at the top of a guide home, as in
@@ -975,6 +1019,10 @@ body:has(.markdown-section:empty) :is(aside.sidebar, button.sidebar-toggle) {
   aspect-ratio: 4 / 3;
   object-fit: cover;
   border-radius: 0.5rem;
+  /* a faint edge and soft shadow, as Open Publishing Space gives a cover, so a light cover stands out from the page */
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-mono-max) 10%, transparent),
+    0 4px 8px color-mix(in srgb, var(--color-mono-max) 6%, transparent);
 }
 
 .markdown-section .guide-cover h1 {
@@ -1010,6 +1058,21 @@ body:has(.markdown-section:empty) :is(aside.sidebar, button.sidebar-toggle) {
     flex-basis: auto;
     width: 100%;
   }
+}
+
+/* A portrait cover (such as a book cover), with guide-cover-portrait next to guide-cover: shown whole, at its own
+   shape and a narrower width, also on phones, as in Open Publishing Space. An unusually tall image is kept to 18rem
+   high, and narrows to keep its shape. */
+.markdown-section .guide-cover.guide-cover-portrait > p:first-child {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.markdown-section .guide-cover.guide-cover-portrait > p:first-child img {
+  width: auto;
+  max-width: 11rem;
+  max-height: 18rem;
+  aspect-ratio: auto;
 }
 
 /* Site title – the site's name at the top left of the navbar, as in a site header, on pages that hide the sidebar
@@ -1085,8 +1148,11 @@ body:has(.markdown-section > style) .app-nav li:has(> a.site-title) {
     flex-basis: 100%;
   }
 
+  /* a long name wraps onto a second line instead of running off the page (Docsify keeps navbar links on one line) */
   .app-nav a.site-title {
     font-size: 1.25em;
+    white-space: normal;
+    line-height: 1.3;
   }
 }
 
